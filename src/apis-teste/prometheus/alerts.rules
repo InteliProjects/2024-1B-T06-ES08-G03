@@ -1,0 +1,11 @@
+groups:
+- name: example
+  rules:
+  - alert: HighRequestRate
+    expr: increase(http_requests_total[1m]) > 1000
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High request rate detected"
+      description: "The application has received more than 1000 requests within 10 seconds."

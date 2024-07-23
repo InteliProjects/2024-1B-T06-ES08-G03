@@ -1,0 +1,9 @@
+version: '3'
+services:
+  recent:
+    build: .
+    ports:
+      - '80:3001'
+    volumes:
+      - ./:/app/
+    restart: always

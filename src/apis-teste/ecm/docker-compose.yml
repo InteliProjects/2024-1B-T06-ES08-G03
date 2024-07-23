@@ -1,0 +1,46 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - '80:3000'
+    volumes:
+      - ./:/app/
+    networks:
+      - monitoring
+    restart: always
+
+  k6_500:
+    image: loadimpact/k6
+    volumes:
+      - ./src/apis-teste/ecm/__tests__/loadTests:/loadTests
+    networks:
+      - monitoring
+    depends_on:
+      - api
+    entrypoint: ["sh", "-c", "ls /loadTests && tail -f /dev/null"]
+
+  k6_1000:
+    image: loadimpact/k6
+    volumes:
+      - ./src/apis-teste/ecm/__tests__/loadTests:/loadTests
+    networks:
+      - monitoring
+    depends_on:
+      - api
+    entrypoint: ["sh", "-c", "ls /loadTests && tail -f /dev/null"]
+
+  k6_1500:
+    image: loadimpact/k6
+    volumes:
+      - ./src/apis-teste/ecm/__tests__/loadTests:/loadTests
+    networks:
+      - monitoring
+    depends_on:
+      - api
+    entrypoint: ["sh", "-c", "ls /loadTests && tail -f /dev/null"]
+
+networks:
+  monitoring:
+    external: true
+

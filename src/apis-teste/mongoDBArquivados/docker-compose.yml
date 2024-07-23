@@ -1,0 +1,9 @@
+version: '3'
+services:
+  filed:
+    build: .
+    ports:
+      - '80:3017'
+    volumes:
+      - ./:/app/
+    restart: always

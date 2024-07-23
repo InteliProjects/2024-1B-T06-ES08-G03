@@ -1,0 +1,22 @@
+version: '3'
+services:
+  api_monolito:
+    build: ./ecm_monolito
+    ports:
+        - '3080:3022'
+    volumes:
+        - ./ecm_monolito/:/app/
+    networks:
+        - monitoring
+    restart: always
+  bd_monolito:
+    build: ./bd_monolito
+    ports:
+      - '3050:3017'
+    volumes:
+      - ./bd_monolito/:/app/
+    networks:
+      - monitoring
+    restart: always
+networks:
+  monitoring:

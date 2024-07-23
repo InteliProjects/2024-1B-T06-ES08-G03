@@ -1,0 +1,7 @@
+docker build -t prometheus:latest .
+docker-compose build
+docker-compose up
+docker run -d -p 9090:9090 --name prometheus prometheus:latest
+
+
+npm install prom-client axios

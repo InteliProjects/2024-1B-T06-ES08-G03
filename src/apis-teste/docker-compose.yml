@@ -1,0 +1,74 @@
+version: '3'
+services:
+  api:
+    build: ./ecm
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./ecm/:/app/
+    networks:
+      - monitoring
+    restart: always
+  
+  filed:
+    build: ./mongoDBArquivados
+    ports:
+      - '3003:3003'
+    volumes:
+      - ./mongoDBArquivados/:/app/
+    networks:
+      - monitoring
+    restart: always
+
+  intermediate:
+    build: ./mongoDBIntermediario
+    ports:
+      - '3002:3002'
+    volumes:
+      - ./mongoDBIntermediario/:/app/
+    networks:
+      - monitoring
+    restart: always
+
+  recent:
+    build: ./mongoDBRecentes
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./mongoDBRecentes/:/app/
+    networks:
+      - monitoring
+    restart: always
+
+  prometheus:
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts.rules:/etc/prometheus/alerts.rules
+    networks:
+      - monitoring
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3004:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - monitoring
+    restart: always
+
+networks:
+  monitoring:
+
+volumes:
+  grafana-storage:
